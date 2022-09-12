@@ -19,6 +19,16 @@ contract SocialMediaContract {
     uint commentReward;
     IToken token;
 
+    // follower mapping for users
+    mapping (address => uint) followerCount;
+    mapping (address => mapping (address => bool)) following;
+
+    // mapping for verified waitlist
+    mapping (address => bool) verified;
+
+    // number of followers needed to become verified
+    uint public verifiedLevel;
+
     struct Post {
         uint id;
         string posthash; // This will include image and description
@@ -27,6 +37,8 @@ contract SocialMediaContract {
         uint likes; // Post Likes
         uint postedAt; // TimeStamp
         string commentsHash; // IPFS hash for the comments
+        bool locked; // check if the post is locked or not
+        uint unlockPrice; // the price for unlocking the post in the native coin
     }
 
     event PostCreated(
@@ -41,11 +53,13 @@ contract SocialMediaContract {
     // Mappings
     mapping(uint256 => Post) private idToPost;
     mapping(address => mapping(uint => bool)) private liked; // mapping for user if he/she has liked the post or not
+    mapping (address => bool) unlocked;
 
-    constructor(uint _postReward, uint _likeReward,  uint _commentReward, address tokenAddress) {
+    constructor(uint _postReward, uint _likeReward,  uint _commentReward, address tokenAddress, uint _verifiedLevel) {
         postReward = _postReward;
         likeReward = _likeReward;
         commentReward = _commentReward;
+        verifiedLevel = _verifiedLevel;
         token = IToken(tokenAddress);
         totalreward = token.totalRewards();
         decimals = token.decimals();
@@ -71,7 +85,9 @@ contract SocialMediaContract {
             deleted,
             likes,
             postedAt,
-            comments
+            comments,
+            false,
+            0
         );
 
         liked[msg.sender][newPostId] = false;
@@ -104,7 +120,82 @@ contract SocialMediaContract {
             deleted,
             likes,
             postedAt,
-            comments
+            comments,
+            false,
+            0
+        );
+
+        liked[msg.sender][newPostId] = false;
+
+        emit PostCreated(
+            newPostId,
+            _postHash,
+            payable(msg.sender),
+            deleted,
+            likes,
+            postedAt
+        );
+        }
+    }
+
+    // function to create a locked post
+        function createLockedPost(string memory _postHash, uint unlockPrice) public {
+        require(bytes(_postHash).length > 0, "PostHash Not Found");
+        uint remainingReward = totalreward - rewardAccumalted;
+
+        if (remainingReward >= postReward) {
+        _posts.increment();
+        uint256 newPostId = _posts.current(); // Post Counter Incremented
+        uint likes = 0; // Likes initialized to zero
+        uint postedAt = block.timestamp; // Post Timestamp
+        bool deleted = false; // Post Status default false
+        string memory comments = " ";
+
+        idToPost[newPostId] = Post(
+            newPostId,
+            _postHash,
+            payable(msg.sender),
+            deleted,
+            likes,
+            postedAt,
+            comments,
+            false,
+            unlockPrice
+        );
+
+        liked[msg.sender][newPostId] = false;
+
+        uint amount = postReward * (10 ** decimals);
+        token.transfer(msg.sender, amount);
+
+        rewardAccumalted = rewardAccumalted + postReward;
+
+        emit PostCreated(
+            newPostId,
+            _postHash,
+            payable(msg.sender),
+            deleted,
+            likes,
+            postedAt
+        );
+        } else {
+        _posts.increment();
+        uint256 newPostId = _posts.current(); // Post Counter Incremented
+        uint likes = 0; // Likes initialized to zero
+        uint postedAt = block.timestamp; // Post Timestamp
+        bool deleted = false; // Post Status default false
+        string memory comments = " ";
+
+        idToPost[newPostId] = Post(
+            newPostId,
+            _postHash,
+            payable(msg.sender),
+            deleted,
+            likes,
+            postedAt,
+            comments,
+            false,
+            unlockPrice
         );
 
         liked[msg.sender][newPostId] = false;
@@ -207,8 +298,7 @@ contract SocialMediaContract {
         require(id <= postCount, "The post does not exist");
 
         address author = idToPost[id].author;
-        uint amount = tip * (10 ** decimals);
-        token.transferFrom(msg.sender, author, amount);
+        token.transferFrom(msg.sender, author, tip);
     }
 
     // Return all posts of msg.sender
@@ -243,7 +333,55 @@ contract SocialMediaContract {
     function getLikeCount(uint _id) public view returns (uint) {
         return idToPost[_id].likes;
     }
+
+    // function to follow a user
+    function followUser(address user) public {
+        require(following[msg.sender][user] != true, "You are already following this user");
+        followerCount[user] = followerCount[user] + 1;
+        following[msg.sender][user] = true;
+    }
+
+    // function to get the waitlist for verified status
+    function getVerified() public {
+        require(followerCount[msg.sender] >= verifiedLevel, "You do not have enough followers");
+        require(verified[msg.sender] != true, "You are already verified");
+        verified[msg.sender] = true;
+    }
+
+    // function to check if a user is verified
+    function checkVerified(address user) public view returns (bool) {
+        bool _verified = verified[user];
+        return _verified;
+    }
     
+    // function to return the price for unlocking a post
+    function getPrice(uint id) public view returns (uint price) {
+        price = idToPost[id].unlockPrice;
+    }
+    
+    function mintVerified(address user) external {
+        require(verified[user] == true, "You are not verified yet");
+
+        verified[user] = false;
+    }
+
+    // function to unlock a post
+    function unlockPost(uint postId) public {
+        require(unlocked[msg.sender] != true, "You have unlocked this post already");
+        
+        uint price = getPrice(postId);
+        address author = idToPost[postId].author;
+        token.transferFrom(msg.sender, author, price);
+    }
+
+    // function to view locked post
+    function viewLockedPost(uint postId) public view returns (Post memory post) {
+        require(unlocked[msg.sender] == true, "You have not unlocked this post yet");
+
+        post = idToPost[postId];
+        return post;
+    }
+
 }
 
 interface IToken {
