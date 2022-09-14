@@ -1,0 +1,40 @@
+1. Connect wallet page
+    * brief write up for project
+    * connect wallet module(wallet connect or metamask)
+2. HomePage
+    Central body
+        * get to view all posts(most recent first)
+    Left panel
+        * create post
+        * profile
+    Right panel
+        * interests
+        * 
+3. User page
+    Central body
+        * user Profile
+        * user posts
+    Right panel
+        * user NFTs
+4. Single post
+    Central body
+        * post picture
+        * post content
+        * number of likes
+        * tip button etc
+        * comments
+5. NFTs Page
+    Central panel
+        * List of NFTs
+        * List of NFTs based on interests
+6. purchase token page
+    Central panel
+        * rate
+        * bundles
+        * custom amount purchase
+
+Main theme
+    * Home button
+    * back button
+    * disconnet wallet button
+    * purchase token button

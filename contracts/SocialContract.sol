@@ -19,6 +19,11 @@ contract SocialMediaContract {
     uint commentReward;
     IToken token;
 
+    // mapping for an address to the ipfs hash of his profile
+    mapping(address => string) profileHash;
+    // the count for a userPosts
+    mapping(address => uint) userPostCount;
+
     // follower mapping for users
     mapping (address => uint) followerCount;
     mapping (address => mapping (address => bool)) following;
@@ -65,6 +70,18 @@ contract SocialMediaContract {
         decimals = token.decimals();
     }
 
+    // function to sign a user up
+    function signUp(string memory hash) public {
+        profileHash[msg.sender] = hash;
+        userPostCount[msg.sender] = 0;
+        followerCount[msg.sender] = 0;
+    }
+
+    // function to sign a user up
+    function updateProfile(string memory hash) public {
+        profileHash[msg.sender] = hash;
+    }
+
     // Creates a Post
     function createPost(string memory _postHash) public {
         require(bytes(_postHash).length > 0, "PostHash Not Found");
@@ -97,6 +114,8 @@ contract SocialMediaContract {
 
         rewardAccumalted = rewardAccumalted + postReward;
 
+        userPostCount[msg.sender] = userPostCount[msg.sender] + 1;
+
         emit PostCreated(
             newPostId,
             _postHash,
@@ -126,6 +145,8 @@ contract SocialMediaContract {
         );
 
         liked[msg.sender][newPostId] = false;
+
+        userPostCount[msg.sender] = userPostCount[msg.sender] + 1;
 
         emit PostCreated(
             newPostId,
@@ -323,6 +344,35 @@ contract SocialMediaContract {
             }
         }
         return posts;
+    }
+
+    // Return all posts of a user
+    function fetchUserPosts(address user) public view returns (Post[] memory) {
+        uint totalPostCount = _posts.current();
+        uint currentIndex = 0;
+        uint itemCount = 0;
+
+        for (uint i = 0; i < totalPostCount; i++) {
+            if (idToPost[i + 1].author == user) {
+                itemCount += 1;
+            }
+        }
+
+        Post[] memory posts = new Post[](itemCount);
+        for (uint i = 0; i < totalPostCount; i++) {
+            if (idToPost[i + 1].author == user) {
+                uint currentId = i + 1;
+                Post storage currentPost = idToPost[currentId];
+                posts[currentIndex] = currentPost;
+                currentIndex += 1;
+            }
+        }
+        return posts;
+    }
+
+    // function to return user profile
+    function getUserProfile() public view returns (string memory _profileHash, uint postCount, uint _followerCount) {
+        return(profileHash[msg.sender], userPostCount[msg.sender], followerCount[msg.sender]);
     }
 
     // Setter and Getter Functions

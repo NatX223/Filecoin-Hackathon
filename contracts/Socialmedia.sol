@@ -18,9 +18,6 @@ contract SocialContract {
         //to be included in post hash
         // string body
         // string imagehash
-        // bool mintable;
-        // uint amount;
-        // address contractAddress;
     }
 
     // post counter
