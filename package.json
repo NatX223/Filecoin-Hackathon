@@ -4,6 +4,7 @@
     "hardhat": "^2.10.2"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.7.3"
+    "@openzeppelin/contracts": "^4.7.3",
+    "web3.storage": "^4.4.0"
   }
 }
