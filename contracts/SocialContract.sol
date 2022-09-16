@@ -77,7 +77,7 @@ contract SocialMediaContract {
         followerCount[msg.sender] = 0;
     }
 
-    // function to sign a user up
+    // function to update the user profile
     function updateProfile(string memory hash) public {
         profileHash[msg.sender] = hash;
     }
@@ -233,6 +233,7 @@ contract SocialMediaContract {
     }
 
     // Return all posts stored in mapping
+    // done
     function fetchPosts() public view returns (Post[] memory) {
         uint postCount = _posts.current();
         uint currentIndex = 0;
@@ -371,8 +372,15 @@ contract SocialMediaContract {
     }
 
     // function to return user profile
+    // done
     function getUserProfile() public view returns (string memory _profileHash, uint postCount, uint _followerCount) {
         return(profileHash[msg.sender], userPostCount[msg.sender], followerCount[msg.sender]);
+    }
+
+    // function to return the postHash of a post
+    function getHash(uint id) view public returns (string memory posthash) {
+        posthash = idToPost[id].posthash;
+        return posthash;
     }
 
     // Setter and Getter Functions
