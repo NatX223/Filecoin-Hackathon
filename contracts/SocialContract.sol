@@ -41,7 +41,7 @@ contract SocialMediaContract {
         bool deleted; // Delete Status
         uint likes; // Post Likes
         uint postedAt; // TimeStamp
-        string commentsHash; // IPFS hash for the comments
+        string[] commentsHash; // IPFS hash for the comments
         bool locked; // check if the post is locked or not
         uint unlockPrice; // the price for unlocking the post in the native coin
     }
@@ -93,7 +93,7 @@ contract SocialMediaContract {
         uint likes = 0; // Likes initialized to zero
         uint postedAt = block.timestamp; // Post Timestamp
         bool deleted = false; // Post Status default false
-        string memory comments = " ";
+        string[] memory comments;
 
         idToPost[newPostId] = Post(
             newPostId,
@@ -130,7 +130,7 @@ contract SocialMediaContract {
         uint likes = 0; // Likes initialized to zero
         uint postedAt = block.timestamp; // Post Timestamp
         bool deleted = false; // Post Status default false
-        string memory comments = " ";
+        string[] memory comments;
 
         idToPost[newPostId] = Post(
             newPostId,
@@ -170,7 +170,7 @@ contract SocialMediaContract {
         uint likes = 0; // Likes initialized to zero
         uint postedAt = block.timestamp; // Post Timestamp
         bool deleted = false; // Post Status default false
-        string memory comments = " ";
+        string[] memory comments;
 
         idToPost[newPostId] = Post(
             newPostId,
@@ -205,7 +205,7 @@ contract SocialMediaContract {
         uint likes = 0; // Likes initialized to zero
         uint postedAt = block.timestamp; // Post Timestamp
         bool deleted = false; // Post Status default false
-        string memory comments = " ";
+        string[] memory comments;
 
         idToPost[newPostId] = Post(
             newPostId,
@@ -285,16 +285,19 @@ contract SocialMediaContract {
         uint remainingReward = totalreward - rewardAccumalted;
         require(id <= postCount, "The post does not exist");
         if (remainingReward >= commentReward) {
-            idToPost[id].commentsHash = newHash;
+            idToPost[id].commentsHash.push(newHash);
             uint amount = postReward * (10 ** decimals);
             token.transfer(msg.sender, amount);
 
             rewardAccumalted = rewardAccumalted + postReward;
         } else {
-            idToPost[id].commentsHash = newHash;
+            idToPost[id].commentsHash.push(newHash);
         }
 
     }
+
+    // function to fetch the comments on a particular post
+    
 
     // Dislike Post
     function dislikePost(uint _id) public {

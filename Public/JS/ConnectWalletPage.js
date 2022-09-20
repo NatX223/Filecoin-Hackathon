@@ -57,7 +57,7 @@ async function GetHomePage() {
   const Data = await Contract.getUserProfile();
   const hash = Data[0];
 
-  const Profile = fetchProfile(hash);
+  const Profile = fetchIPFS(hash);
   const userName = Profile.username;
   const profilePic = Profile.pic;
   const picURL = `https://gateway.moralisipfs.com/ipfs/${profilePic}`;
@@ -70,6 +70,8 @@ async function GetHomePage() {
     let post = JSON.parse(_post);
 
     // INSERT DATA INTO THE POST COMPONENT
+    // IF THE CONTENT HAS NO PICTURE
+    // THEN PUT IT IN A TEXT ONLY
   }
 
   // INSERT the profile the details into the component
@@ -89,7 +91,7 @@ async function signUp() {
   };
 
   const profile = new Moralis.File("profile.json", {
-    base64: bBuffer.from(JSON.stringify(profileObject), 'base64'),
+    base64: Buffer.from(JSON.stringify(profileObject), 'base64'),
   });
 
   await profile.saveIPFS();
@@ -103,7 +105,78 @@ async function signUp() {
   console.log(receipt.transactionHash);
 }
 
-async function fetchProfile(hash) {
+async function makePost() {
+  // get the post content and picture
+  const postText = document.getElementById("postText").value;
+  const file = document.getElementById("profilePic").files[0];
+  // if file == null
+  if (file == null) {
+    const postObject = {
+      body: postText
+    };
+  
+    const post = new Moralis.File("post.json", {
+      base64: Buffer.from(JSON.stringify(postObject), 'base64'),
+    });
+  
+    await post.saveIPFS();
+    const postHash = post.hash();
+  
+    const Contract = new ethers.Contract(contractAddress, abi, signer);
+    const createPost = await Contract.createPost(postHash);
+  
+    const receipt = await createPost.wait();
+    alert("Post uploaded successfully");
+    console.log(receipt.transactionHash);
+
+  } else {
+    const pic = new Moralis.File(file.name, file);
+    await pic.saveIPFS();
+    const picHash = pic.hash();
+
+    const postObject = {
+      body: postText,
+      imageHash: picHash
+    };
+  
+    const post = new Moralis.File("post.json", {
+      base64: Buffer.from(JSON.stringify(postObject), 'base64'),
+    });
+  
+    await post.saveIPFS();
+    const postHash = post.hash();
+  
+    const Contract = new ethers.Contract(contractAddress, abi, signer);
+    const createPost = await Contract.createPost(postHash);
+  
+    const receipt = await createPost.wait();
+    alert("Post uploaded successfully");
+    console.log(receipt.transactionHash);
+  }
+}
+
+async function makeComment(id) {
+  const commentText = document.getElementById("postText").value;
+  const commentObject = {
+    comment: commentText
+  };
+
+  const comment = new Moralis.File("comment.json", {
+    base64: Buffer.from(JSON.stringify(commentObject), 'base64'),
+  });
+
+  await comment.saveIPFS();
+  const postHash = post.hash();
+
+  const Contract = new ethers.Contract(contractAddress, abi, signer);
+  const commentPost = await Contract.createPost(postHash);
+
+  const receipt = await commentPost.wait();
+  alert("comment uploaded successfully");
+  console.log(receipt.transactionHash);
+}
+
+async function fetchIPFS(hash) {
   const url = `https://gateway.moralisipfs.com/ipfs/${hash}`;
   const response = await fetch(url);
   return await response.json();
