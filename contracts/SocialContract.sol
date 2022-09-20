@@ -180,7 +180,7 @@ contract SocialMediaContract {
             likes,
             postedAt,
             comments,
-            false,
+            true,
             unlockPrice
         );
 
@@ -380,6 +380,10 @@ contract SocialMediaContract {
         return(profileHash[msg.sender], userPostCount[msg.sender], followerCount[msg.sender]);
     }
 
+    function getProfile(address user) public view returns (string memory _profileHash, uint postCount, uint _followerCount) {
+        return(profileHash[user], userPostCount[user], followerCount[user]);
+    }
+
     // function to return the postHash of a post
     function getHash(uint id) view public returns (string memory posthash) {
         posthash = idToPost[id].posthash;
@@ -438,7 +442,15 @@ contract SocialMediaContract {
     // function to view locked post
     function viewLockedPost(uint postId) public view returns (Post memory post) {
         require(unlocked[msg.sender] == true, "You have not unlocked this post yet");
+        post = idToPost[postId];
+        return post;
+    }
 
+    // function to view post
+    function viewPost(uint postId) public view returns (Post memory post) {
+        require(unlocked[msg.sender] == true, "You have not unlocked this post yet");
+        require(idToPost[postId].deleted != true, "Post has been deleted");
+        
         post = idToPost[postId];
         return post;
     }

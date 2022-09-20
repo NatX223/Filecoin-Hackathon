@@ -26,3 +26,8 @@ ERC.test.js
 
 Features.txt
 Public/JS/Functions.txt
+Public/JS/NFTCollectionContractABI.js
+Public/JS/SmartContractABI.js
+Public/JS/ConnectWalletPage.js
+Public/JS/TokenCntractABI.js
+Public/JS/VerifiedContractABI.js
