@@ -24,6 +24,8 @@ const VerifiedContractABI = verifiedcontractabi;
 var web3provider;
 var signer;
 
+export default signer;
+
 
 // DISPLAY OPTIONS/MODULE
 async function walletOptions() {
@@ -78,12 +80,21 @@ async function GetHomePage() {
     let postContent = content.body;
     let imagehash = content.imageHash;
 
-    let imageurl = `https://gateway.moralisipfs.com/ipfs/${imagehash}`;
-
     // INSERT DATA INTO THE POST COMPONENT
     // IF THE POST IS LOCKED
-    // IF THE CONTENT HAS NO PICTURE
-    // THEN PUT IT IN A TEXT ONLY
+    if (post.locked == true) {
+      if (imagehash == null) {
+        
+      } else {
+        let imageurl = `https://gateway.moralisipfs.com/ipfs/${imagehash}`;
+      }
+    } else {
+      if (imagehash == null) {
+        
+      } else {
+        let imageurl = `https://gateway.moralisipfs.com/ipfs/${imagehash}`;
+      }
+    }
   }
 
   // INSERT the profile the details into the component
@@ -249,10 +260,11 @@ async function viewUnlockedPost(id) {
   let postContent = content.body;
   let imagehash = content.imageHash;
 
-  let imageurl = `https://gateway.moralisipfs.com/ipfs/${imagehash}`;
-
-  // IF THE CONTENT HAS NO PICTURE
-  // THEN PUT IT IN A TEXT ONLY
+  if (image == null) {
+    // THEN PUT IT IN A TEXT ONLY
+  } else {
+    let imageurl = `https://gateway.moralisipfs.com/ipfs/${imagehash}`;
+  }
 }
 
 async function viewPost(id) {
@@ -263,10 +275,12 @@ async function viewPost(id) {
   let postContent = content.body;
   let imagehash = content.imageHash;
 
-  let imageurl = `https://gateway.moralisipfs.com/ipfs/${imagehash}`;
+    if (image == null) {
+      // THEN PUT IT IN A TEXT ONLY
+    } else {
+      let imageurl = `https://gateway.moralisipfs.com/ipfs/${imagehash}`;
+    }
 
-  // IF THE CONTENT HAS NO PICTURE
-  // THEN PUT IT IN A TEXT ONLY
 }
 
 async function loadUser(user) {
@@ -288,9 +302,23 @@ async function loadUser(user) {
   for(let i = Posts.length - 1; i >= 0; i--) {
     let _post = Posts[i];
     let post = JSON.parse(_post);
+    let content = fetchIPFS(post.posthash);
+    let postContent = content.body;
+    let imagehash = content.imageHash;
 
-    // INSERT DATA INTO THE POST COMPONENT
-    // IF THE CONTENT HAS NO PICTURE
+    if (post.locked == true) {
+      if (imagehash == null) {
+        
+      } else {
+        let imageurl = `https://gateway.moralisipfs.com/ipfs/${imagehash}`;
+      }
+    } else {
+      if (imagehash == null) {
+        
+      } else {
+        let imageurl = `https://gateway.moralisipfs.com/ipfs/${imagehash}`;
+      }
+    }
     // THEN PUT IT IN A TEXT ONLY
   }
 

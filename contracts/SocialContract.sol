@@ -34,6 +34,9 @@ contract SocialMediaContract {
     // number of followers needed to become verified
     uint public verifiedLevel;
 
+    // Mapping for users to their collection address
+    mapping (address => address) userCollection;
+
     struct Post {
         uint id;
         string posthash; // This will include image and description
@@ -455,6 +458,19 @@ contract SocialMediaContract {
         return post;
     }
 
+    function setCollection(address contractAddress) public {
+        userCollection[msg.sender] = contractAddress;
+    }
+
+    function mintPost(uint amount, uint id) public {
+        require(amount < 5, "You cannot mint more than 5");
+        string memory uri = idToPost[id].posthash;
+        address collectionAddress = userCollection[msg.sender];
+        Collection NFTCollection = Collection(collectionAddress);
+
+        NFTCollection.mint(msg.sender, amount, uri);
+    }
+
 }
 
 interface IToken {
@@ -470,4 +486,8 @@ interface IToken {
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
 
     function decimals() external returns (uint);
+}
+
+interface Collection {
+    function mint(address to, uint amount, string memory uri) external;
 }

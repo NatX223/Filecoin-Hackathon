@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract SocialToken is ERC20 {
     uint maxSupply;
     uint totalReward;
-    constructor(uint _maxSupply, address owner) ERC20("SOCIAL", "SOC") {
+    constructor(uint _maxSupply, address owner) ERC20("DASOCIA", "DSC") {
         maxSupply = _maxSupply;
         totalReward = (maxSupply * 50) / 100;
         uint reward = totalReward * (10 ** 18);

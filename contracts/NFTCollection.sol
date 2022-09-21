@@ -268,11 +268,11 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     function mint(
         address to,
         uint256 amount,
-        bytes memory data,
         string memory uri
     ) public {
         require(msg.sender == _owner, "you are not authorized to mint this NFT");
         require(to != address(0), "ERC1155: mint to the zero address");
+        require(amount < 5, "You cannot mint more than 5");
 
         _ids.increment();
         uint id = _ids.current();
@@ -282,14 +282,10 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         uint256[] memory ids = _asSingletonArray(id);
         uint256[] memory amounts = _asSingletonArray(amount);
 
-        _beforeTokenTransfer(operator, address(0), to, ids, amounts, data);
 
         _balances[id][to] += amount;
         emit TransferSingle(operator, address(0), to, id, amount);
 
-        _afterTokenTransfer(operator, address(0), to, ids, amounts, data);
-
-        _doSafeTransferAcceptanceCheck(operator, address(0), to, id, amount, data);
     }
 
     /**
