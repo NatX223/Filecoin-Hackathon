@@ -9,15 +9,19 @@ const ethers = Moralis.web3Library;
 import { appcontractabi } from "./SmartContractABI";
 import { tokencontractabi } from "./TokenCntractABI";
 import { verifiedcontractabi } from "./VerifiedContractABI";
+import { CollectionABI } from "./NFTCollectionContractABI";
+import { CollectionByteCode } from "./NFTCollectionContractBC";
 
 // INSTATIATING THE CONTRACT ADDRESS FOR BOTH APP SMART CONTRACT AND TOKEN SMART CONTRACT
-const AppContractAddress = ""; // the App Contract Address
-const TokenContractAddress = ""; // the token contract address
-const VerifiedContractAddress = ""; // the verified contract address
+const AppContractAddress = "0xC160754FFB07B739BD2F7F2fEcB142A66258479B"; // the App Contract Address
+const TokenContractAddress = "0xFC2809d091d3ebef9626F818F4c53b08e887207a"; // the token contract address
+const VerifiedContractAddress = "0xCf640befc245261Cbe13b1a6888dd7E775b8f6eb"; // the verified contract address
 
 const AppContractABI = appcontractabi;
 const TokenContractABI = tokencontractabi;
 const VerifiedContractABI = verifiedcontractabi;
+const NFTCollectionABI = CollectionABI;
+const NFTCollectionByteCode = CollectionByteCode;
 
 // INSTATIATING THE NEEDED VARIABLES PROVIDER AND SIGNER
 // export these
@@ -25,7 +29,6 @@ var web3provider;
 var signer;
 
 export default signer;
-
 
 // DISPLAY OPTIONS/MODULE
 async function walletOptions() {
@@ -394,6 +397,26 @@ async function followUser(user) {
   alert("You just tipped this post"); // get hug/handshake annimation
   console.log(receipt.transactionHash);
 
+}
+
+async function deployCollectionContract() {
+  const Contract = new ethers.Contract(AppContractAddress, AppContractABI, signer);
+
+  const factory = new ContractFactory(NFTCollectionABI, NFTCollectionByteCode, signer);
+  const NFTContract = await factory.deploy();
+
+  const CollectionAddress = NFTContract.address;
+
+  const deployCon = await NFTContract.deployTransaction.wait();
+  const receipt = await Contract.setCollection(CollectionAddress);
+
+}
+
+async function mintPost(id) {
+  var amount = document.getElementById("amount");
+
+  const Contract = new ethers.Contract(AppContractAddress, AppContractABI, signer);
+  const receipt = await Contract.mintPost(amount, id);
 }
 
 async function fetchIPFS(hash) {
