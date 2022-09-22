@@ -32,3 +32,9 @@ Public/JS/ConnectWalletPage.js
 Public/JS/TokenCntractABI.js
 Public/JS/VerifiedContractABI.js
 ContractAddress.txt
+Public/dump.html
+Public/NFTCollectionContractABI.js
+Public/NFTCollectionContractBC.js
+Public/SmartContractABI.js
+Public/VerifiedContractABI.js
+Public/TokenCntractABI.js

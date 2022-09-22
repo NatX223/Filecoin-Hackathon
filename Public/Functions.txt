@@ -1,0 +1,25 @@
+Implemented functions
+
+1. sign up
+2. display connect wallet options
+3. connect with metamask
+4. connect with walletconnect
+5. return caller profile
+6. return all posts
+7. make post
+8. comment
+9. like
+10. tip post
+11. mint verified NFT
+12. load user (still have work to do)
+13. follow
+14. unlock locked post
+15. view locked post
+
+TODO
+
+10. clean up js file and segment
+
+4. handle function calling and page transitions
+5. deploy NFT collection
+6. mint post NFT
