@@ -6,11 +6,11 @@ Moralis.start({ serverUrl, appId });
 // IMPORTING ETHERS.JS
 const ethers = Moralis.web3Library;
 // IMPORTING THE CONTRACT ABI
-import { appcontractabi } from "./SmartContractABI";
-import { tokencontractabi } from "./TokenCntractABI";
-import { verifiedcontractabi } from "./VerifiedContractABI";
-import { CollectionABI } from "./NFTCollectionContractABI";
-import { CollectionByteCode } from "./NFTCollectionContractBC";
+import { appcontractabi } from "./SmartContractABI.js";
+import { tokencontractabi } from "./TokenCntractABI.js";
+import { verifiedcontractabi } from "./VerifiedContractABI.js";
+import { CollectionABI } from "./NFTCollectionContractABI.js";
+import { CollectionByteCode } from "./NFTCollectionContractBC.js";
 
 // INSTATIATING THE CONTRACT ADDRESS FOR BOTH APP SMART CONTRACT AND TOKEN SMART CONTRACT
 const AppContractAddress = "0xC160754FFB07B739BD2F7F2fEcB142A66258479B"; // the App Contract Address
@@ -35,11 +35,7 @@ export default signer;
 // CONNECT WALET FUNCTION (walletConnect)
 async function walletconnect() {
     web3provider = await Moralis.enableWeb3({ provider: "walletconnect"});
-    await web3provider.send("eth_requestAccounts", [])
-    .catch((function (error) {
-        alert("For some reason you could not connect your wallet to DaSocia");
-        console.log(error);
-      }));
+    await web3provider.send("eth_requestAccounts", []);
     signer = web3provider.getSigner();
     alert("You now connected to DaSocia");
     await GetHomePage();
@@ -48,13 +44,8 @@ async function walletconnect() {
 // CONNECT WALET FUNCTION (metamask)
 async function metamask() {
   web3provider = await Moralis.enableWeb3({ provider: "metamask"});
-  await web3provider.send("eth_requestAccounts", [])
-  .catch((function (error) {
-      alert("For some reason you could not connect your wallet to DaSocia");
-      console.log(error);
-    }));
+  await web3provider.send("eth_requestAccounts", []);
   signer = web3provider.getSigner();
-  
   alert("You now connected to DaSocia");
   await GetHomePage();
 }
