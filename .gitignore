@@ -24,7 +24,6 @@ artifacts
 #uncompleted files
 ERC.test.js
 
-Features.txt
 Public/JS/Functions.txt
 Public/JS/NFTCollectionContractABI.js
 Public/JS/SmartContractABI.js

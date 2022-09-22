@@ -1,0 +1,26 @@
+Features to be implemented
+
+1. Adding a verified feature, only when a user has a certain number of followers, say 1000
+    create a followers mapping for users
+    create follow function
+    reward users for reaching a milestone
+    create mint verified NFT, if follower count is reached
+    to be completed on the 12th
+2. verified users can setup a store front, and the items will be paid for in the native token
+    might integrate later
+3. paying of native token to view exclusive content
+    create locked param on the post struct
+    create locked content function
+    create function unlock content
+    create function view content
+    to be completed on the 12th
+4. subscription to see posts
+    setting up of subscription to see posts
+    create setup subscription function
+    might integrate
+5. Purchasing of the token
+    this will be done with chainlink priceFeeds or moralis in the front end
+5. planning out tokenomics of native token
+
+5. write scripts(project logic)
+6. start work on the frontend
