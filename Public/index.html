@@ -12,11 +12,9 @@
               height: 100%;
               margin: 0;
             }
-            
+
             .bg {
-              /* The image used */
               background-image: url("https://static.vecteezy.com/system/resources/thumbnails/002/011/995/small/abstract-background-with-dynamic-effect-modern-pattern-suitable-for-wallpaper-banner-background-card-book-illustration-landing-page-gift-cover-flyer-report-bussiness-social-media-free-vector.jpg");
-            
               /* Full height */
               height: 100%; 
             
@@ -28,7 +26,7 @@
             </style>
       </head>
       <body class="container justify-content-md-left bg">
-        <div class="container justify-content-md-left bg">
+        <div class="container justify-content-md-left fbg" id="firstPage" style="display: block;">
             <div class="container justify-content-md-left">
                 <div class="row justify-content-md-left">
                     <div class="col-6">
@@ -80,6 +78,200 @@
                   </div>
               </div>
           </div>
+          <!-- <div id="secondPage" style="display: none;">
+            <div class="container justify-content-md-center">
+              <div class="row justify-content-between">
+                  <div class="col-3 justify-content-start" id="leftPanel">
+                  </div>
+                  <div class="col-6 justify-content-end">
+                      <div class="container justify-content-left">
+                          <div class="row justify-content-left">
+                              <div class="col-4">
+                                  <h3 class="text-start">Posts Feed</h3>
+                              </div>
+                          </div>
+                        </div>
+                        <hr/>
+                      <div class="container justify-content-md-start" id="homePosts">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal" tabindex="-1" id="tipModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Tip Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeModal"></button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="input-group mb-3">
+                              <span class="input-group-text">$</span>
+                              <input type="number" id="tipAmount" aria-label="Amount (to the nearest dollar)" required>
+                              <span class="input-group-text">.00</span>
+                          </div>
+                          <div class="row justify-content-around">
+                              <div class="col-4">
+                                  <button type="button" class="btn btn-primary" id="approveTip">Approve Tip</button>
+                              </div>
+                              <div class="col-4">
+                                  <button type="button" class="btn btn-success" id="sendTip">Send Tip</button>
+                              </div>
+                            </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="footerCloseModal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal" tabindex="-1" id="commentModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Make Comment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeModal"></button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="input-group mb-3">
+                              <span class="input-group-text">Comment</span>
+                              <input type="text" id="commentText" required>
+                          </div>
+                          <div class="row justify-content-around">
+                              <div class="col-4">
+                                  <button type="button" class="btn btn-primary" id="submitComment">Submit</button>
+                              </div>
+                            </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="footerCloseModal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal" tabindex="-1" id="signupModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Sign Up</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeModal"></button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="input-group mb-3">
+                              <span class="input-group-text">UserName</span>
+                              <input type="text" id="userName" required>
+                          </div>
+                          <input type="file" id="profilePic" required>
+                          <div class="row justify-content-around">
+                              <div class="col-4">
+                                  <button type="button" class="btn btn-primary" id="submitSignup">Sign Up</button>
+                              </div>
+                            </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="footerCloseModal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal" tabindex="-1" id="addPostModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Create Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeModal"></button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="input-group mb-3">
+                              <span class="input-group-text">content</span>
+                              <input type="text" id="postText" required>
+                          </div>
+                          <input type="file" id="postPic">
+                          <div class="row justify-content-around">
+                              <div class="col-4">
+                                  <button type="button" class="btn btn-primary" id="submitPost">Post</button>
+                              </div>
+                            </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="footerCloseModal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal" tabindex="-1" id="addLockedPostModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Create Locked Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeModal"></button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="input-group mb-3">
+                              <span class="input-group-text">content</span>
+                              <input type="text" id="lockedPostText" required>
+                          </div>
+                          <input type="file" id="lockedPostPic">
+                          <div class="input-group mb-3">
+                              <span class="input-group-text">$</span>
+                              <input type="number" id="price" aria-label="Amount (to the nearest dollar)" required>
+                              <span class="input-group-text">.00</span>
+                          </div>
+                          <div class="row justify-content-around">
+                              <div class="col-4">
+                                  <button type="button" class="btn btn-primary" id="submitLockedPost">Post</button>
+                              </div>
+                            </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="footerCloseModal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+          <div id="thirdPage" style="display: none;">
+            <div class="container justify-content-md-center">
+              <div class="row justify-content-between">
+                  <div class="col-6 justify-content-end">
+                      <div class="container justify-content-left">
+                          <div class="row justify-content-left">
+                              <div class="col-4">
+                                  <h3 class="text-start">Posts</h3>
+                              </div>
+                          </div>
+                        </div>
+                        <hr/>
+                      <div class="container justify-content-md-start" id="userPosts">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal" tabindex="-1" id="mintPostModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Mint Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeModal"></button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="input-group mb-3">
+                              <span class="input-group-text">amount must not exceed 5</span>
+                              <input type="number" id="mintAmount" required>
+                          </div>
+                          <div class="row justify-content-around">
+                              <div class="col-4">
+                                  <button type="button" class="btn btn-success" id="mintPost">Mint Post</button>
+                              </div>
+                            </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="footerCloseModal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div> -->
           <script type="module" src="main.js"></script>
       </body>
 </html>
