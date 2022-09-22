@@ -35,7 +35,6 @@ export default signer;
 // CONNECT WALET FUNCTION (walletConnect)
 async function walletconnect() {
     web3provider = await Moralis.enableWeb3({ provider: "walletconnect"});
-    await GetHomePage();
     await web3provider.send("eth_requestAccounts", [])
     .catch((function (error) {
         alert("For some reason you could not connect your wallet to DaSocia");
@@ -43,19 +42,21 @@ async function walletconnect() {
       }));
     signer = web3provider.getSigner();
     alert("You now connected to DaSocia");
+    await GetHomePage();
   }
 
 // CONNECT WALET FUNCTION (metamask)
 async function metamask() {
   web3provider = await Moralis.enableWeb3({ provider: "metamask"});
-  await GetHomePage();
   await web3provider.send("eth_requestAccounts", [])
   .catch((function (error) {
       alert("For some reason you could not connect your wallet to DaSocia");
       console.log(error);
     }));
   signer = web3provider.getSigner();
+  
   alert("You now connected to DaSocia");
+  await GetHomePage();
 }
 
 // DISPLAY HOMEPAGE FUNCTION
